@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App - Викторины в реальном времени</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">🎯 Quiz App</h1>
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn btn-primary" onclick="showLogin()">Войти</button>
+                    <button class="btn btn-secondary" onclick="showRegister()">Регистрация</button>
+                </div>
+                <div class="user-info" id="userInfo" style="display:none;">
+                    <span id="usernameDisplay"></span>
+                    <button class="btn btn-danger" onclick="logout()">Выйти</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основное содержимое -->
+        <main class="main-content">
+            <!-- Страница входа -->
+            <div id="loginPage" class="page" style="display:none;">
+                <div class="form-container">
+                    <h2>Вход</h2>
+                    <input type="text" id="loginUsername" placeholder="Имя пользователя">
+                    <input type="password" id="loginPassword" placeholder="Пароль">
+                    <button class="btn btn-primary" onclick="login()">Войти</button>
+                    <p>Нет аккаунта? <a href="#" onclick="showRegister()">Зарегистрироваться</a></p>
+                </div>
+            </div>
+
+            <!-- Страница регистрации -->
+            <div id="registerPage" class="page" style="display:none;">
+                <div class="form-container">
+                    <h2>Регистрация</h2>
+                    <input type="text" id="registerUsername" placeholder="Имя пользователя">
+                    <input type="password" id="registerPassword" placeholder="Пароль">
+                    <select id="registerRole">
+                        <option value="participant">Участник</option>
+                        <option value="organizer">Организатор</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="register()">Зарегистрироваться</button>
+                    <p>Уже есть аккаунт? <a href="#" onclick="showLogin()">Войти</a></p>
+                </div>
+            </div>
+
+            <!-- Главная страница -->
+            <div id="homePage" class="page" style="display:none;">
+                <!-- Для организатора -->
+                <div id="organizerPanel" style="display:none;">
+                    <h2>Создание квиза</h2>
+                    <div class="form-card">
+                        <input type="text" id="quizTitle" placeholder="Название квиза" class="form-input">
+                        <input type="text" id="quizCategory" placeholder="Категория" class="form-input">
+                        <input type="number" id="quizTime" placeholder="Время на вопрос (секунд)" value="30" class="form-input">
+                        
+                        <h3>Вопросы</h3>
+                        <div id="questionsContainer"></div>
+                        <button class="btn btn-secondary" onclick="addQuestion()">➕ Добавить вопрос</button>
+                        <button class="btn btn-success" onclick="saveQuiz()">💾 Сохранить квиз</button>
+                    </div>
+
+                    <h3>Мои квизы</h3>
+                    <div id="myQuizzes"></div>
+                </div>
+
+                <!-- Для участника -->
+                <div id="participantPanel">
+                    <h2>Доступные квизы</h2>
+                    <div id="availableQuizzes"></div>
+                    
+                    <h3>Подключиться по коду</h3>
+                    <div class="form-card">
+                        <input type="text" id="roomCode" placeholder="Введите код комнаты" class="form-input">
+                        <button class="btn btn-primary" onclick="joinRoom()">Подключиться</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Комната квиза -->
+            <div id="roomPage" class="page" style="display:none;">
+                <div id="roomContent">
+                    <!-- Лобби -->
+                    <div id="lobby">
+                        <h2>Комната: <span id="roomCodeDisplay"></span></h2>
+                        <h3>Квиз: <span id="roomQuizTitle"></span></h3>
+                        <div id="playersList">
+                            <h4>Игроки:</h4>
+                            <ul id="playersListUl"></ul>
+                        </div>
+                        <button id="startQuizBtn" class="btn btn-success" onclick="startQuiz()">▶ Начать квиз</button>
+                        <button class="btn btn-danger" onclick="leaveRoom()">Выйти</button>
+                    </div>
+
+                    <!-- Игра -->
+                    <div id="game" style="display:none;">
+                        <div class="game-header">
+                            <span id="questionCounter">Вопрос 1/10</span>
+                            <span id="timerDisplay">⏱️ 30</span>
+                        </div>
+                        <div id="questionContent">
+                            <h2 id="questionText"></h2>
+                            <div id="questionImage" style="display:none;">
+                                <img id="questionImageElement" src="" alt="Вопрос">
+                            </div>
+                            <div id="optionsContainer"></div>
+                        </div>
+                        <div id="scoresDisplay">
+                            <h4>Таблица лидеров</h4>
+                            <ul id="scoresList"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Результаты -->
+                    <div id="results" style="display:none;">
+                        <h2>🏆 Результаты квиза</h2>
+                        <div id="leaderboard"></div>
+                        <button class="btn btn-primary" onclick="leaveRoom()">Вернуться на главную</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

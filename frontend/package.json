@@ -1,0 +1,11 @@
+{
+  "name": "quiz-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for quiz application",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "socket.io-client": "^4.6.1"
+  }
+}
